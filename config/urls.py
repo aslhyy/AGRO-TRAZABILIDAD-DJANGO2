@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 
@@ -41,7 +41,8 @@ urlpatterns = [
     path('api/procesos/detalles/', DetalleProcesoListCreateView.as_view(), name='detalles-list-create'),
     path('api/procesos/detalles/<int:pk>/', DetalleProcesoRetrieveUpdateDeleteView.as_view(), name='detalles-detail'),
 
-
+    # TRANSPORTE (nueva app)
+    path('api/transporte/', include('transporte.urls')),
 
     # Schema
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'lotes',
     "django_filters",
     "procesos",  
+    "transporte"
     #'drf_spectacular_sidecar',
 ]
 
