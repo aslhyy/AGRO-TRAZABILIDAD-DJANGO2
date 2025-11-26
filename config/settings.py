@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'rest_framework',
     'lotes',
+    "django_filters",
+    "procesos",  
     #'drf_spectacular_sidecar',
 ]
 
