@@ -1,34 +1,14 @@
-# mod_lotes.py
-
-from rest_framework import serializers, generics
+from rest_framework import generics
 from django.utils import timezone
-from .models import Lote
 
-# ------------------------
-#  SERIALIZER
-# ------------------------
-class LoteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Lote
-        fields = '__all__'
-
-    # VALIDACIÓN: La fecha de siembra NO puede ser futura
-    def validate_fecha_siembra(self, value):
-        if value > timezone.now().date():
-            raise serializers.ValidationError(
-                "La fecha de siembra no puede ser futura."
-            )
-        return value
+from .models import Lote, HistorialLote
+from .serializers import LoteSerializer
 
 
-# ------------------------
-#  VISTAS CRUD + FILTROS
-# ------------------------
 class LoteListCreateView(generics.ListCreateAPIView):
     queryset = Lote.objects.all()
     serializer_class = LoteSerializer
 
-    # FILTROS DE BÚSQUEDA
     def get_queryset(self):
         qs = super().get_queryset()
 
@@ -47,3 +27,15 @@ class LoteListCreateView(generics.ListCreateAPIView):
 class LoteRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Lote.objects.all()
     serializer_class = LoteSerializer
+
+    def perform_update(self, serializer):
+        # 1. Guardar los cambios del lote
+        lote = serializer.save()
+
+        # 2. Crear registro en historial
+        HistorialLote.objects.create(
+            lote=lote,
+            fecha=timezone.now(),
+            descripcion=f"Actualización del lote {lote.id}",
+            etapa=lote.estado,      # puedes cambiarlo si deseas guardar otro campo
+        )

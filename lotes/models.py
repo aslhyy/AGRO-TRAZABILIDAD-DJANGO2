@@ -11,10 +11,9 @@ class Lote(models.Model):
 
 class HistorialLote(models.Model):
     lote = models.ForeignKey(Lote, on_delete=models.CASCADE, related_name="historial")
-    fecha = models.DateTimeField(auto_now_add=False)
+    fecha = models.DateTimeField()
     descripcion = models.TextField()
-    etapa = models.CharField(max_length=100)  # Ej: "Siembra", "Riego", "Cosecha", etc.
+    etapa = models.CharField(max_length=100)
 
     def __str__(self):
         return f"Historial Lote {self.lote.id} - {self.etapa}"
-
