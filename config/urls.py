@@ -3,17 +3,6 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 
-from lotes.mod_lotes import (
-    LoteListCreateView,
-    LoteRetrieveUpdateDeleteView,
-)
-
-from lotes.mod_trazabilidad import (
-    HistorialPorLoteView,
-    TrazabilidadCompletaView,
-)
-
-
 from procesos.mod_procesos import (
     ProcesoListCreateView,
     ProcesoRetrieveUpdateDeleteView,
@@ -27,11 +16,8 @@ from procesos.mod_detalles import (
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # LOTES CRUD
-    path('api/lotes/', LoteListCreateView.as_view(), name='lotes-list-create'),
-    path('api/lotes/<int:pk>/', LoteRetrieveUpdateDeleteView.as_view(), name='lotes-detail'),
-    
-
+    # Rutas LOTES
+    path("api/lotes/", include("lotes.urls")),
 
     # PROCESOS CRUD (declared directamente en config/urls.py)
     path('api/procesos/', ProcesoListCreateView.as_view(), name='procesos-list-create'),
